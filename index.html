@@ -1,32 +1,561 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>AI/ML</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Home · About · Research · Projects</title>
+  <!-- Font Awesome Icons (optional but nice) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
+    /* Global reset and styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: #f8faff;
+      color: #1e293b;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Header and nav container */
+    .page-header {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: white;
+      padding: 1.5rem 2rem 0.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo a {
+      font-size: 1.6rem;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo i {
+      color: #38bdf8;
+    }
+
+    /* Tab navigation */
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: #cbd5e1;
+      font-size: 1.1rem;
+      font-weight: 500;
+      padding: 0.75rem 1.8rem;
+      border-radius: 40px 40px 0 0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+    }
+
+    .tab-btn i {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .tab-btn:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: #f1f5f9;
+    }
+
+    .tab-btn.active {
+      background: #f8faff;
+      color: #0f172a;
+      border-bottom: 3px solid #38bdf8;
+      font-weight: 600;
+    }
+
+    .tab-btn.active i {
+      color: #0f172a;
+      opacity: 1;
+    }
+
+    /* Main content area */
+    .content-container {
+      flex: 1;
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+      width: 100%;
+    }
+
+    /* Tab panels */
+    .tab-panel {
+      background: white;
+      border-radius: 28px;
+      padding: 2.5rem 2.8rem;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e9eef4;
+      display: none;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0.4; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Typography inside panels */
+    .tab-panel h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .tab-panel h1 i {
+      color: #38bdf8;
+      font-size: 2rem;
+    }
+
+    .tab-panel h2 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin: 1.8rem 0 0.8rem;
+      color: #1e293b;
+      border-left: 5px solid #38bdf8;
+      padding-left: 1rem;
+    }
+
+    .tab-panel h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 1.2rem 0 0.4rem;
+      color: #1e293b;
+    }
+
+    .tab-panel p {
+      color: #334155;
+      margin-bottom: 1rem;
+    }
+
+    .tab-panel .subhead {
+      color: #64748b;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 0.8rem;
+    }
+
+    /* profile / about grid */
+    .profile-grid {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin: 1.5rem 0 1rem;
+    }
+
+    .profile-avatar {
+      flex-shrink: 0;
+      width: 140px;
+      height: 140px;
+      background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      color: #1e4b8b;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .profile-text {
+      flex: 1;
+    }
+
+    /* research cards */
+    .research-item {
+      background: #f9fcff;
+      border-left: 6px solid #38bdf8;
+      padding: 1.5rem 1.8rem;
+      border-radius: 16px;
+      margin: 1.5rem 0;
+      transition: transform 0.1s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .research-item:hover {
+      background: #f0f7ff;
+    }
+
+    .research-item h3 {
+      margin-top: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .research-item h3 i {
+      color: #0284c7;
+      font-size: 1.2rem;
+    }
+
+    .research-meta {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin: 0.5rem 0 0.8rem;
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* projects grid */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.8rem;
+      margin: 1.8rem 0;
+    }
+
+    .project-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 1.6rem 1.5rem 1.5rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+    }
+
+    .project-card:hover {
+      border-color: #b9d9f0;
+      box-shadow: 0 12px 24px -8px rgba(0, 100, 200, 0.12);
+      transform: translateY(-3px);
+    }
+
+    .project-card i {
+      font-size: 2rem;
+      color: #0f172a;
+      background: #eef6ff;
+      padding: 0.8rem;
+      border-radius: 14px;
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+
+    .project-card h3 {
+      font-size: 1.25rem;
+      margin: 0.5rem 0 0.3rem;
+      color: #0f172a;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin: 1rem 0 0.2rem;
+    }
+
+    .project-tags span {
+      background: #eef2f6;
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #1e3f5e;
+    }
+
+    /* Buttons / links */
+    .btn-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: #0284c7;
+      font-weight: 500;
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-top: 0.6rem;
+      transition: color 0.15s;
+    }
+
+    .btn-link:hover {
+      color: #0c4a6e;
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    .page-footer {
       text-align: center;
-      padding: 50px;
-      background: #f4f4f4;
+      padding: 1.8rem;
+      color: #62748c;
+      font-size: 0.9rem;
+      border-top: 1px solid #e2e8f0;
+      background: #f1f6fd;
+      margin-top: 1.5rem;
     }
 
-    h1 {
-      color: #333;
-    }
-
-    p {
-      color: #555;
-      font-size: 18px;
-    }
-
-    a {
-      color: blue;
+    /* Responsive */
+    @media (max-width: 700px) {
+      .page-header {
+        padding: 1.2rem 1rem 0.2rem;
+      }
+      .tab-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.95rem;
+      }
+      .tab-panel {
+        padding: 1.8rem 1.2rem;
+      }
+      .tab-panel h1 {
+        font-size: 1.8rem;
+      }
+      .profile-grid {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .profile-avatar {
+        width: 120px;
+        height: 120px;
+        font-size: 3.2rem;
+      }
+      .content-container {
+        padding: 0 1rem;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Hello, I am Asheesh</h1>
-  <p>Welcome to my first website hosted on GitHub Pages.</p>
-  <a href="https://github.com/yourusername">Visit my GitHub</a>
+
+<!-- Header with tabs -->
+<header class="page-header">
+  <div class="header-content">
+    <div class="logo">
+      <a href="#">
+        <i class="fas fa-code"></i> alex.dev
+      </a>
+    </div>
+    <!-- Tab navigation (3 tabs) -->
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="about" role="tab" aria-selected="true">
+        <i class="fas fa-user"></i> About Me
+      </button>
+      <button class="tab-btn" data-tab="research" role="tab" aria-selected="false">
+        <i class="fas fa-flask"></i> Research Work
+      </button>
+      <button class="tab-btn" data-tab="projects" role="tab" aria-selected="false">
+        <i class="fas fa-laptop-code"></i> Projects
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Main content: panels for each tab -->
+<main class="content-container">
+  <!-- ABOUT ME PANEL -->
+  <section id="about" class="tab-panel active" role="tabpanel">
+    <h1><i class="fas fa-user-astronaut"></i> About Me</h1>
+    <div class="subhead">curious mind · researcher · builder</div>
+    
+    <div class="profile-grid">
+      <div class="profile-avatar">
+        <i class="fas fa-user-graduate"></i>
+      </div>
+      <div class="profile-text">
+        <p><strong>Hi, I'm Alex Morgan.</strong> I'm a computer scientist and researcher passionate about human-centered AI, distributed systems, and open-source. Currently pursuing my Ph.D., I love turning complex problems into elegant, usable solutions.</p>
+        <p>I believe in technology that augments human potential. When I'm not coding or reading papers, you'll find me hiking, brewing espresso, or contributing to local STEM outreach.</p>
+        <p><i class="fas fa-map-pin" style="color:#0284c7; width: 1.2rem;"></i> Based in Seattle, WA · <i class="fas fa-envelope" style="color:#0284c7;"></i> alex.morgan@example.edu</p>
+      </div>
+    </div>
+
+    <h2><i class="fas fa-heart" style="font-size:1.3rem; margin-right:0.5rem;"></i> Interests</h2>
+    <p>Machine learning for social good · interpretable models · edge computing · reproducible research · SciPy & PyTorch · interactive data visualization.</p>
+    
+    <h2><i class="fas fa-graduation-cap"></i> Education</h2>
+    <p><strong>Ph.D. in Computer Science</strong> — University of Washington (2022–present)<br>
+    <strong>B.S. in Computer Engineering</strong> — Georgia Tech, summa cum laude (2018–2022)</p>
+  </section>
+
+  <!-- RESEARCH WORK PANEL -->
+  <section id="research" class="tab-panel" role="tabpanel">
+    <h1><i class="fas fa-microscope"></i> Research Work</h1>
+    <div class="subhead">publications · preprints · ongoing projects</div>
+
+    <div class="research-item">
+      <h3><i class="fas fa-file-alt"></i> Adaptive Federated Learning for Heterogeneous Edge Devices</h3>
+      <div class="research-meta">
+        <span><i class="far fa-calendar-alt"></i> 2024 · IEEE INFOCOM</span>
+        <span><i class="fas fa-users"></i> A. Morgan, L. Chen, R. Gupta</span>
+      </div>
+      <p>Proposed a communication-efficient federated learning framework that dynamically adjusts local computation based on device capabilities. Reduced convergence time by 34% on non-IID data.</p>
+      <a href="#" class="btn-link"><i class="fas fa-external-link-alt"></i> Paper (PDF)</a>
+    </div>
+
+    <div class="research-item">
+      <h3><i class="fas fa-file-alt"></i> Interpretable Chest X-Ray Diagnosis with Concept Bottlenecks</h3>
+      <div class="research-meta">
+        <span><i class="far fa-calendar-alt"></i> 2023 · NeurIPS Workshop (MedAI)</span>
+        <span><i class="fas fa-users"></i> A. Morgan, S. Patel</span>
+      </div>
+      <p>Designed a concept-based model that provides visual and textual explanations for pneumonia detection. Achieved 92% AUC while maintaining high clinician trust in user studies.</p>
+      <a href="#" class="btn-link"><i class="fas fa-external-link-alt"></i> Preprint</a>
+    </div>
+
+    <div class="research-item">
+      <h3><i class="fas fa-file-alt"></i> GreenCloud: Carbon-Aware Scheduling for Serverless Workloads</h3>
+      <div class="research-meta">
+        <span><i class="far fa-calendar-alt"></i> 2023 · ACM SoCC (poster)</span>
+        <span><i class="fas fa-users"></i> A. Morgan, M. Rivera, et al.</span>
+      </div>
+      <p>Developed a scheduling policy that reduces carbon footprint by up to 28% by shifting flexible workloads to regions/times with cleaner energy. Open-source simulator included.</p>
+      <a href="#" class="btn-link"><i class="fab fa-github"></i> Code & dataset</a>
+    </div>
+
+    <h2><i class="fas fa-clock"></i> Ongoing</h2>
+    <p><strong>· Trustworthy multimodal LLMs for scientific discovery</strong> — early-stage investigation on hallucination detection in material science.<br>
+    <strong>· TinyML for wildlife monitoring</strong> — collaborating with ecologists on low-power acoustic sensors.</p>
+  </section>
+
+  <!-- PROJECTS PANEL -->
+  <section id="projects" class="tab-panel" role="tabpanel">
+    <h1><i class="fas fa-rocket"></i> Projects</h1>
+    <div class="subhead">open-source · prototypes · experiments</div>
+
+    <div class="projects-grid">
+      <!-- project 1 -->
+      <div class="project-card">
+        <i class="fas fa-chart-line"></i>
+        <h3>MLflow Dashboard Lite</h3>
+        <p>A lightweight, self-hosted dashboard for tracking ML experiments — built with FastAPI and Svelte. Zero-config, runs on a Raspberry Pi.</p>
+        <div class="project-tags">
+          <span>Python</span>
+          <span>FastAPI</span>
+          <span>Svelte</span>
+        </div>
+        <a href="#" class="btn-link"><i class="fab fa-github"></i> GitHub</a>
+      </div>
+      <!-- project 2 -->
+      <div class="project-card">
+        <i class="fas fa-language"></i>
+        <h3>Polyglot Notes</h3>
+        <p>Cross-platform note-taking app with real-time translation and code snippet support. Uses Tauri and Rust for native performance.</p>
+        <div class="project-tags">
+          <span>Rust</span>
+          <span>Tauri</span>
+          <span>TypeScript</span>
+        </div>
+        <a href="#" class="btn-link"><i class="fab fa-github"></i> GitHub</a>
+      </div>
+      <!-- project 3 -->
+      <div class="project-card">
+        <i class="fas fa-leaf"></i>
+        <h3>EcoTrace</h3>
+        <p>Browser extension that estimates carbon footprint of online deliveries and suggests greener alternatives. Built during HackGreen 2023.</p>
+        <div class="project-tags">
+          <span>JavaScript</span>
+          <span>Chrome API</span>
+          <span>Node.js</span>
+        </div>
+        <a href="#" class="btn-link"><i class="fas fa-external-link-alt"></i> Live demo</a>
+      </div>
+      <!-- project 4 -->
+      <div class="project-card">
+        <i class="fas fa-robot"></i>
+        <h3>PaperBot</h3>
+        <p>Discord bot that fetches and summarizes arXiv papers based on user-defined keywords. Over 2k servers use it daily.</p>
+        <div class="project-tags">
+          <span>Python</span>
+          <span>discord.py</span>
+          <span>Transformers</span>
+        </div>
+        <a href="#" class="btn-link"><i class="fab fa-github"></i> GitHub</a>
+      </div>
+    </div>
+    <p style="margin-top: 1.2rem; font-size: 0.95rem;"><i class="fas fa-share-alt" style="color:#0284c7;"></i> More on <a href="#" style="color:#0284c7;">GitHub</a> and <a href="#" style="color:#0284c7;">personal blog</a>.</p>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="page-footer">
+  <p>© 2025 Alex Morgan · built with simplicity & clean tabs</p>
+</footer>
+
+<!-- Tab switching JavaScript -->
+<script>
+  (function() {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.tab-panel');
+
+    // Function to activate a tab by its data-tab value
+    function activateTab(tabId) {
+      // Remove active class from all tabs and panels
+      tabs.forEach(tab => {
+        tab.classList.remove('active');
+        tab.setAttribute('aria-selected', 'false');
+      });
+      panels.forEach(panel => {
+        panel.classList.remove('active');
+      });
+
+      // Add active class to the clicked tab and corresponding panel
+      const activeTab = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+      const activePanel = document.getElementById(tabId);
+
+      if (activeTab && activePanel) {
+        activeTab.classList.add('active');
+        activeTab.setAttribute('aria-selected', 'true');
+        activePanel.classList.add('active');
+      }
+    }
+
+    // Add click event listeners to each tab button
+    tabs.forEach(tab => {
+      tab.addEventListener('click', (e) => {
+        const tabId = tab.getAttribute('data-tab');
+        if (tabId) {
+          activateTab(tabId);
+        }
+      });
+    });
+
+    // Optional: check URL hash to open a specific tab (e.g., #research, #projects)
+    const hash = window.location.hash.substring(1); // remove '#'
+    if (hash && ['about', 'research', 'projects'].includes(hash)) {
+      activateTab(hash);
+    }
+    // If hash is invalid or missing, 'about' remains active (default in HTML)
+  })();
+</script>
+
 </body>
 </html>
